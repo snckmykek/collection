@@ -1,0 +1,133 @@
+MainScreen:
+    MDNavigationLayout:
+        ScreenManager:
+            id: screen_manager
+            Screen:
+                name: 'main screen'
+                MDFloatLayout:
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        MDToolbar:
+                            title: 'Collections'
+                            elevation: 10
+                            left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                            right_action_items: [['dots-vertical', lambda x: root.open_dropdown(x)]]
+
+                        MDBottomNavigation:
+                            id: main_navigator
+                            current_tab: 'screen 1'
+
+                            MDBottomNavigationItem:
+                                name: 'screen 1'
+                                text: 'Show'
+                                icon: 'trophy-award'
+                                on_tab_press: main_navigator.current_tab = self.name
+
+                                MDBoxLayout:
+                                    MDLabel:
+                                        text: "screen 1"
+                                        halign: 'center'
+
+                            MDBottomNavigationItem:
+                                name: 'screen 2'
+                                text: 'Search'
+                                icon: 'feature-search-outline'
+                                on_tab_press: main_navigator.current_tab = self.name
+
+                                MDBoxLayout:
+                                    MDLabel:
+                                        text: "screen 2"
+                                        halign: 'center'
+
+                            MDBottomNavigationItem:
+                                name: 'screen 3'
+                                text: 'People'
+                                icon: 'account-supervisor-outline'
+                                on_tab_press: main_navigator.current_tab = self.name
+
+                                MDBoxLayout:
+                                    MDLabel:
+                                        text: "screen 3"
+                                        halign: 'center'
+
+                            MDBottomNavigationItem:
+                                name: 'screen 4'
+                                text: 'Result'
+                                icon: 'trending-up'
+                                on_tab_press: main_navigator.current_tab = self.name
+
+                                MDBoxLayout:
+                                    MDLabel:
+                                        text: "screen 4"
+                                        halign: 'center'
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            title: "Collections"
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        anchor_y: "top"
+        size_hint_y: None
+        height: avatar.height
+        padding_x: 50
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "100dp", "100dp"
+            source: "images/tasks.png"
+            allow_stretch: True
+            color: app.theme_cls.icon_color
+        MDIconButton:
+            icon: "close"
+            on_press:
+                root.nav_drawer.set_state("close")
+                root.screen_manager.current = "main screen"
+
+    MDLabel:
+        text: "Collections"
+        font_style: "Button"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    MDLabel:
+        text: "test@gmail.com"
+        font_style: "Caption"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    ScrollView:
+
+        DrawerList:
+            ItemDrawer:
+                icon: "folder"
+                text: "Folders"
+            ItemDrawer:
+                icon: "cog"
+                text: "Settings"
+            ItemDrawer:
+                icon: "close"
+                text: "Exit"
+
+
+# Menu item in the DrawerList list.
+<ItemDrawer>:
+    theme_text_color: "Custom"
+    on_release: self.parent.set_color_item(self)
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: self.theme_cls.icon_color
